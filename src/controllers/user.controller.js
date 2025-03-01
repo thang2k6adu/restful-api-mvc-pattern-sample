@@ -11,11 +11,18 @@ export const getUsers = async (req, res) => {
 
 export const createUser = async (req, res) => {
   try {
-    const { name, email } = req.body
-    const user = {name, email, createdAt: new Date()}
-    const result = await userServices.createUser(user)
+    const result = await userServices.createUser(req.body)
     res.status(201).json(result)
   } catch (error) {
     res.status(500).json({error: error.message})
+  }
+}
+
+export const deleteUser = async(req, res) => {
+  try {
+    const result = await userServices.deleteUser(req.params.userId)
+    res.status(200).json(result.deleteCount)
+  } catch (error) {
+    
   }
 }
