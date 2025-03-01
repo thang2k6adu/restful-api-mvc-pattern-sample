@@ -1,9 +1,10 @@
 import express from 'express'
 import cors from 'cors'
-import exithook from'async-exit-hook'
+import exithook from 'async-exit-hook'
 import { connectDB, closeDB } from './src/config/db.js'
 import { env } from './src/config/env.js'
-import { userRoutes } from './src/routes/user.route.js'
+import { APIs_V1 } from './src/routes/v1/index.js'
+
 
 const START_SERVER = () => {
   const app = express()
@@ -14,7 +15,7 @@ const START_SERVER = () => {
   app.use(express.json())
 
   // Routes
-  app.use('/api/users', userRoutes)
+  app.use('/v1', APIs_V1)
 
   app.listen(PORT, () => {
     console.log(`Server is running at http://localhost:${PORT}`)
@@ -28,16 +29,16 @@ const START_SERVER = () => {
   })
 }
 
-;(async () => {
-  try {
-    console.log('Connecting to MongoDB Cloud Atlas')
-    await connectDB()
-    console.log('Connected')
+  ; (async () => {
+    try {
+      console.log('Connecting to MongoDB Cloud Atlas')
+      await connectDB()
+      console.log('Connected')
 
-    // Kết nối xong với DB rồi mới start server
-    START_SERVER()
-  } catch (error) {
-    console.error(error)
-    process.exit(0)
-  }
-})()
+      // Kết nối xong với DB rồi mới start server
+      START_SERVER()
+    } catch (error) {
+      console.error(error)
+      process.exit(0)
+    }
+  })()
